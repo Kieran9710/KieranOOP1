@@ -7,11 +7,11 @@ import java.util.List;
 public class Sale {
     // Attributes
     private int id;
-    private Dictionary<Integer, Integer> items;
+    private Dictionary<String, Integer> items;
     private double total;
 
     // Constructor
-    public Sale(ArrayList<Sale> salesList, Dictionary<Integer, Integer> items, double total) {
+    public Sale(ArrayList<Sale> salesList, Dictionary<String, Integer> items, double total) {
         this.id = salesList.size() + 1;
         this.items = items;
         this.total = total;
@@ -26,11 +26,11 @@ public class Sale {
         this.id = id;
     }
 
-    public Dictionary<Integer, Integer> getItems() {
+    public Dictionary<String, Integer> getItems() {
         return items;
     }
 
-    public void setItems(Dictionary<Integer, Integer> items) {
+    public void setItems(Dictionary<String, Integer> items) {
         this.items = items;
     }
 

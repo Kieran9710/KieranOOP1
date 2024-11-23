@@ -1,12 +1,15 @@
 package files;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class controller {
+public class Shop implements CakeSeller{
     ArrayList<Product> productList = new ArrayList<>();
     ArrayList<Sale> salesList = new ArrayList<>();
-    public controller() {
+    ArrayList<Cake> cakeList = new ArrayList<>();
+
+    public Shop() {
         ArrayList<Product> productList = getProductList();
+        Product customCake = new Product( productList,"Custom Cake", 65.00, 0);
+        productList.add(customCake);
         Product sample1 =  new Product( productList,"Croissant", 2.99, 50);
         productList.add(sample1);
         Product sample2 = new Product( productList,"Pain Au Chocolat", 3.99, 30);
@@ -28,26 +31,16 @@ public class controller {
         return salesList;
     }
 
-    public void setalesList(ArrayList<Sale> list) {
+    public void setSalesList(ArrayList<Sale> list) {
         this.salesList = list;
     }
 
-    public String addProduct(String name, double price, int quantity){
-        ArrayList<Product> productList = getProductList();
-        productList.add(new Product(productList, name, price, quantity));
-        return "Product Added";
+    public ArrayList<Cake>  getCakeList() {
+        return cakeList;
     }
 
-    public String addQuantity(int id, int quantity){
-        ArrayList<Product> productList = getProductList();
-        try {
-            Product product = productList.stream().filter(x -> x.getId() == id).findFirst().get();
-            product.setQuantity(product.getQuantity() + quantity);
-            return "Quantity Added";
-        }
-        catch (Exception e){
-            return "Product Id not found";
-        }
+    public void setCakeList(ArrayList<Cake> list) {
+        this.cakeList = list;
     }
 
     public String sellItems(Dictionary<Integer,Integer> saleItems){
@@ -55,7 +48,8 @@ public class controller {
         ArrayList<Sale> salesList = getSalesList();
         ArrayList<Integer> errorIds  = new ArrayList<>();
         ArrayList<Integer> quantityErrorIds  = new ArrayList<>();
-        Sale newSale = new Sale(salesList, saleItems, 0.0);
+        Dictionary<String, Integer> saleList = new Hashtable<>();
+        Sale newSale = new Sale(salesList, saleList, 0.0);
         String result = "";
         saleItems.keys().asIterator().forEachRemaining((key -> {
             Integer quantity = saleItems.get(key);
@@ -65,6 +59,7 @@ public class controller {
                 if(product.getQuantity() > quantity) {
                     product.setQuantity(product.getQuantity() - quantity);
                     newSale.setTotal(newSale.getTotal() + product.getPrice() * quantity);
+                    saleList.put(product.getName(), quantity);
                 }
                 else{
                     quantityErrorIds.add(key);
@@ -79,17 +74,30 @@ public class controller {
             for (Integer errorId : errorIds) {
 
                 result += "Product Id " + Integer.toString(errorId) + " not found\n";
-                saleItems.remove(errorId);
 
             }
             for (Integer quantityErrorId : quantityErrorIds) {
                 result += "Product Id " + Integer.toString(quantityErrorId) + " does not have enough quantity\n";
-                saleItems.remove(quantityErrorId);
             }
         }
-        newSale.setItems(saleItems);
+        newSale.setItems(saleList);
         salesList.add(newSale);
         result += "Sale price is " + String.format("%.2f", newSale.getTotal());
         return result;
+    }
+
+    @Override
+    public void orderCake(String flavor, int sizeInInches, List<String> toppings) {
+
+    }
+
+    @Override
+    public double calculatePrice() {
+        return 0;
+    }
+
+    @Override
+    public String completeSale() {
+        return "";
     }
 }

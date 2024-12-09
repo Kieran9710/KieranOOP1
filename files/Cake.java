@@ -1,36 +1,76 @@
 package files;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 
-public class Cake {
+
+
+public non-sealed class Cake implements Product  {
+    //Attributes
     private int id;
-    private String type ;
+    private String name;
     private String message;
     private List<String> toppings;
-    private int saleId;
+    private double price;
+    private int quantity;
 
-    public Cake(List<Cake>cakeList,int saleID, String type)
+    public Cake(int count,String name, double price, int quantity)
     {
-        this(cakeList, saleID, type, "", new ArrayList<>());
+        this(count, name, price,  quantity, "", new ArrayList<>());
     }
 
-    public Cake(List<Cake>cakeList,int saleID, String type, String message)
+    public Cake(int count,String name,double price, int quantity, String message)
     {
-        this(cakeList, saleID, type, message, new ArrayList<>());
+        this(count,name, price,  quantity,  message, new ArrayList<>());
     }
 
-    public Cake(List<Cake>cakeList,int saleID, String type, List<String> toppings)
+    public Cake(int count,String name,double price, int quantity,List<String> toppings)
     {
-        this(cakeList, saleID, type, "", toppings);
+        this(count,name, price,  quantity, "", toppings);
     }
 
-    public Cake(List<Cake>cakeList,int saleID, String type, String message, List<String> toppings)
+    public Cake(int count,String name,double price, int quantity,String message, List<String> toppings)
     {
-        this.id = cakeList.size() + 1;
-        this.type = type;
+        this.id = count+1;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
         this.message = message;
         this.toppings = toppings;
-        this.saleId = saleID;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public List<String> getToppings() {
+        return toppings;
+    }
+
+    @Override
+    public void typeToString(){
+        System.out.println("Type: " + getClass().getName().replace("files.", ""));
+        System.out.println("Message: " + getMessage());
+        System.out.println("Toppings: " + String.join(", ",getToppings()));
+    }
+
 }

@@ -1,55 +1,19 @@
 package files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-public class Product {
-    // Attributes
-    private int id;
-    private String name;
-    private double price;
-    private int quantity;
+public sealed interface Product permits Bread, Cake, Pastry {
 
-    // Constructor
-    public Product(List<Product> list,String name, double price, int quantity) {
-        this.id = list.size() + 1;
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
+    enum ProductType {
+        BREAD,
+        PASTRY,
+        CAKE;
     }
 
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-
+    int getId();
+    String getName();
+    double getPrice();
+    int getQuantity();
+    void setQuantity(int quantity);
+    default void typeToString(){System.out.println("Type: " + getClass());};
+    private static Product findProduct(Shop shop, int id) {return shop.getProducts().stream().filter(i -> i.getId() == (id)).toList().get(0);}
+    static boolean isQuantityValid(Shop shop, int id, int order) {return findProduct(shop, id).getQuantity() >= order;}
 }

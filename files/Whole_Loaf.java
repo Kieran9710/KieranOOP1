@@ -1,7 +1,6 @@
 package files;
 
 public non-sealed class Whole_Loaf extends Bread  {
-    // Attributes
     private int id;
     private String name;
     private double price;

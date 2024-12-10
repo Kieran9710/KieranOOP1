@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.*;
 
 import static java.lang.System.exit;
-import static java.util.Arrays.asList;
 
 public class Shop{
     ArrayList<Product> products = new ArrayList<>();
@@ -61,6 +60,7 @@ public class Shop{
         ArrayList<Integer> quantityErrorIds = new ArrayList<>();
         HashMap<String, Integer> saleList = new HashMap<>();
         final double[] total = {0.0};
+        ArrayList<Double> amounts = new ArrayList<>();
         String result = "";
         saleItems.entrySet().forEach(entry -> {
             Integer key = entry.getKey();
@@ -73,6 +73,7 @@ public class Shop{
                         .orElseThrow(() -> new Exception("Product not found"));
                 if (Product.isQuantityValid(this ,product.getId(),quantity )) {
                     product.setQuantity(product.getQuantity() - quantity);
+                    amounts.add(product.getPrice() * quantity);
                     total[0] = total[0] + product.getPrice() * quantity;
                     saleList.put(product.getName(), quantity);
                 }
@@ -96,19 +97,19 @@ public class Shop{
             }
         }
         setSalesList(newSale);
-        setTransactionList(makeTransaction(newSale.saleid(), newSale.total()));
+        setTransactionList(makeTransaction(newSale.saleid(), newSale.total(), amounts));
         result += "Sale price is " + String.format("%.2f", newSale.total());
         return result;
     }
 
-    public Transaction makeTransaction(int saleid, double total) {
+    public Transaction makeTransaction(int saleid, double total, ArrayList<Double> amounts) {
         Random r = new Random();
         if( r.nextDouble() > 0.5){
-            return new Transaction(total, "Bank Card", saleid, 0.0);
+            return new Transaction(total, "Bank Card", saleid, 0.0, amounts);
         }
         else {
             double paid = total + r.nextDouble()*(r.nextDouble()*10);
-            return new Transaction(paid, "Cash", saleid, paid-total);
+            return new Transaction(paid, "Cash", saleid, paid-total, amounts);
         }
 
     }
@@ -117,16 +118,12 @@ public class Shop{
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Split the line by commas
                 String[] productDetails = line.split(",");
-
-                // Parse product details based on type
                 String type = productDetails[0].trim();
                 String name = productDetails[1].trim();
                 double price = Double.parseDouble(productDetails[2].trim());
                 int quantity = Integer.parseInt(productDetails[3].trim());
 
-                // Handle each product type differently
                 switch (type.toLowerCase()) {
                     case "pastry":
                         setProducts(new Pastry(getProductCount(), name, price, quantity));

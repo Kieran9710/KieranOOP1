@@ -86,15 +86,14 @@ public class OOP1app {
             break;
         }
         switch (Product.ProductType.valueOf(type.toUpperCase())) {
-            case BREAD: result = bakery.addBread(name, price, quantity); break;
-            case PASTRY : result = bakery.addPastry(name, price, quantity); break;
-            case CAKE: {
+            case BREAD-> result = bakery.addBread(name, price, quantity);
+            case PASTRY-> result = bakery.addPastry(name, price, quantity);
+            case CAKE-> {
                 System.out.println("What message do you want on the cake? (Leave blank for none)");
                 var message = myObj.nextLine();
                 System.out.println("Pick your toppings separated by a \",\" or leave blank: sprinkles, cherries, nuts, cream");
                 var toppings = myObj.nextLine().replace(" ", "").split(",");
                 result = bakery.addCake(name, price, quantity, message, toppings);
-                break;
             }
         }
         System.out.println(result);
@@ -112,9 +111,9 @@ public class OOP1app {
             System.out.println("Price: " + product.getPrice());
             System.out.println("Quantity: " + product.getQuantity());
             switch(product){
-                case Bread bread-> {product.typeToString(); break;}
-                case Cake cake-> {product.typeToString(); break;}
-                case Pastry pastry -> {product.typeToString(); break;}
+                case Bread bread-> {bread.typeToString();}
+                case Cake cake-> {cake.typeToString();}
+                case Pastry pastry -> {pastry.typeToString();}
                 default -> throw new IllegalStateException("Unexpected value: " + product.getClass());
             }
 
@@ -167,12 +166,11 @@ public class OOP1app {
                         .orElseThrow(() -> new RuntimeException("Product not found: " + key));
                 System.out.println("   " + product.getId() + "        " + value + "      " + String.format("%.2f", product.getPrice() * value));
             });
-            Transaction transaction = transactions.stream().filter(t->t.getSaleId()==sale.saleid()).findFirst().get();
+            Transaction transaction = transactions.stream().filter(sale::isSaleIdMatching).findFirst().get();
             System.out.println("Method: "+ transaction.getPaymentMethod());
             System.out.println("Paid: "+ String.format("%.2f", transaction.getAmountPaid()));
             System.out.println("Change: "+ String.format("%.2f", transaction.getChange()));
 
         }
     }
-
 }

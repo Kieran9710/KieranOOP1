@@ -28,4 +28,8 @@ public record Sale(int saleid, HashMap<String, Integer> items, double total, Dat
 
     @Override
     public Date saleDate() {return new Date(this.saleDate.getTime());}
+
+    public boolean isSaleIdMatching(Transaction t) {
+        return t.getSaleId() == this.saleid();
+    }
 }

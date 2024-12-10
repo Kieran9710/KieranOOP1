@@ -1,17 +1,20 @@
 package files;
 
+import java.util.ArrayList;
+
 public final class Transaction {
     private final int saleId;
     private final double amountPaid;
     private final double change;
     private final String paymentMethod;
+    private final ArrayList<Double> amounts;
 
-
-    public Transaction(double amountPaid, String paymentMethod, int saleId, double change) {
+    public Transaction(double amountPaid, String paymentMethod, int saleId, double change, ArrayList<Double> amounts) {
         this.amountPaid = amountPaid;
         this.change = change;
         this.paymentMethod = paymentMethod;
         this.saleId = saleId;
+        this.amounts = amounts;
     }
 
     public double getChange() {
@@ -28,5 +31,9 @@ public final class Transaction {
 
     public int getSaleId() {
         return saleId;
+    }
+
+    public ArrayList<Double> getAmounts() {
+        return new ArrayList<Double>(amounts);
     }
 }

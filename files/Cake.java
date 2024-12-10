@@ -5,7 +5,6 @@ import java.util.List;
 
 
 public non-sealed class Cake implements Product  {
-    //Attributes
     private int id;
     private String name;
     private String message;

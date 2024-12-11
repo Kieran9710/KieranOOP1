@@ -6,8 +6,8 @@ public non-sealed class Half_Loaf extends Bread  {
     private double price;
     private int quantity;
 
-    public Half_Loaf(Shop shop, String name, double price, int quantity) {
-        super(shop, name, price, quantity);
+    public Half_Loaf(int count, String name, double price, int quantity) {
+        super(count, name, price, quantity);
     }
 
     @Override

@@ -1,35 +1,13 @@
 package files;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 import static java.lang.System.exit;
 
 public class Shop{
-    ArrayList<Product> products = new ArrayList<>();
-    ArrayList<Sale> salesList = new ArrayList<>();
-    ArrayList<Transaction> transactionList = new ArrayList<>();
-
-    public Shop() {
-        loadProductsFromFile("products.txt");
-    }
-
-    public ArrayList<Product>  getProducts() {
-        return new ArrayList<>(this.products);
-    }
-
-    public ArrayList<String>  getNames() {
-        ArrayList<String> names = new ArrayList<>();
-        for(int i=0;i<this.products.size();i++) {
-            names.add(this.products.get(i).getName());
-        }
-        return names;
-    }
-
-    public void setProducts(Product product) {
-        this.products.add(product);
-    }
+    Bakery bakery;
+    Shop(Bakery bakery){this.bakery = bakery;}
+    private ArrayList<Sale> salesList = new ArrayList<>();
+    private ArrayList<Transaction> transactionList = new ArrayList<>();
 
     public ArrayList<Sale>  getSalesList() {
         return new ArrayList<>(this.salesList);
@@ -45,10 +23,6 @@ public class Shop{
 
     public void setTransactionList(Transaction newTransaction) {
         this.transactionList.add(newTransaction);
-    }
-
-    public int getProductCount(){
-        return this.products.size();
     }
 
     public int getSaleCount(){
@@ -67,11 +41,11 @@ public class Shop{
             Integer quantity = entry.getValue();
 
             try {
-                Product product = this.products.stream()
+                Product product = bakery.getProducts().stream()
                         .filter(x -> x.getId() == key)
                         .findFirst()
                         .orElseThrow(() -> new Exception("Product not found"));
-                if (Product.isQuantityValid(this ,product.getId(),quantity )) {
+                if (Product.isQuantityValid(bakery ,product.getId(),quantity )) {
                     product.setQuantity(product.getQuantity() - quantity);
                     amounts.add(product.getPrice() * quantity);
                     total[0] = total[0] + product.getPrice() * quantity;
@@ -113,52 +87,4 @@ public class Shop{
         }
 
     }
-
-    public void loadProductsFromFile(String fileName) {
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] productDetails = line.split(",");
-                String type = productDetails[0].trim();
-                String name = productDetails[1].trim();
-                double price = Double.parseDouble(productDetails[2].trim());
-                int quantity = Integer.parseInt(productDetails[3].trim());
-
-                switch (type.toLowerCase()) {
-                    case "pastry":
-                        setProducts(new Pastry(getProductCount(), name, price, quantity));
-                        break;
-                    case "cake":
-                        String message = "";
-                        List<String> toppings =  new ArrayList<>();
-                        if(productDetails.length == 5){
-                            if(productDetails[4].contains("[")){
-                                toppings =Arrays.asList(productDetails[4].trim().substring( 1, productDetails[4].length() - 1 ) .split(" "));
-                            }
-                            else{
-                                message =productDetails[4];
-                            }
-
-                        }
-                        if(productDetails.length > 5) {
-                            toppings =Arrays.asList(productDetails[5].trim().split(" "));
-                        }
-                        setProducts(new Cake(getProductCount(), name, price, quantity, message, toppings));
-                        break;
-                    case "half_loaf":
-                        setProducts(new Half_Loaf(this, name, price, quantity));
-                        break;
-                    case "whole_loaf":
-                        setProducts(new Whole_Loaf(this, name, price, quantity));
-                        break;
-                    default:
-                        System.out.println("Unknown product type: " + type);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading the product file: " + e.getMessage());
-            exit(0);
-        }
-    }
-
 }

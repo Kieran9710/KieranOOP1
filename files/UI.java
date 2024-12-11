@@ -5,12 +5,12 @@ import java.util.*;
 import static java.lang.System.exit;
 
 
-public class OOP1app {
+public class UI {
     public static void main(String[] args) {
-        Shop shop = new Shop();
-        Bakery bakery = new Bakery(shop);
+        Bakery bakery = new Bakery();
+        Shop shop = new Shop(bakery);
         Scanner myObj = new Scanner(System.in);
-        System.out.println("Welcome to my OOP1 project application");
+        System.out.println("Welcome to my Bakery management system");
 
         while(true) {
 
@@ -18,11 +18,11 @@ public class OOP1app {
             var response = myObj.nextLine().toLowerCase();
 
             switch (response) {
-                case "1": handleAddProduct(myObj, bakery, shop); continue;
-                case "2": handleViewProducts(shop); continue;
+                case "1": handleAddProduct(myObj, bakery); continue;
+                case "2": handleViewProducts(bakery); continue;
                 case "3": handleSale(myObj, shop); continue;
                 case "4": handleAddQuantity(myObj, bakery); continue;
-                case "5": handleViewSales(shop); continue;
+                case "5": handleViewSales(bakery, shop); continue;
                 case "quit": exit(0);
             }
         }
@@ -39,7 +39,7 @@ public class OOP1app {
         System.out.println("Quit: Enter 'quit'");
     }
 
-    public static void handleAddProduct(Scanner myObj, Bakery bakery, Shop shop) {
+    public static void handleAddProduct(Scanner myObj, Bakery bakery) {
         var validList = new ArrayList<>(List.of("bread", "pastry", "cake"));
         var type = "";
         var name = "";
@@ -58,7 +58,7 @@ public class OOP1app {
         while(true) {
             System.out.println("Enter the product name");
             name = myObj.nextLine();
-            if (!shop.getNames().contains(name)) {
+            if (!bakery.getNames().contains(name)) {
                 break;
             }
             System.out.println("Sorry, we already have a product named " + name);
@@ -99,8 +99,8 @@ public class OOP1app {
         System.out.println(result);
     }
 
-    public static void handleViewProducts(Shop shop) {
-        ArrayList<Product> products = shop.getProducts();
+    public static void handleViewProducts(Bakery bakery) {
+        ArrayList<Product> products = bakery.getProducts();
         System.out.println("");
         System.out.println("Product List");
         for (Product product : products) {
@@ -146,8 +146,8 @@ public class OOP1app {
         System.out.println(result);
     }
 
-    public static void handleViewSales(Shop shop) {
-        ArrayList<Product> products = shop.getProducts();
+    public static void handleViewSales(Bakery bakery, Shop shop) {
+        ArrayList<Product> products = bakery.getProducts();
         ArrayList<Sale> sales = shop.getSalesList();
         ArrayList<Transaction> transactions = shop.getTransactionList();
         System.out.println("");

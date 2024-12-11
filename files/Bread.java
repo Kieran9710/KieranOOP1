@@ -6,8 +6,8 @@ public abstract sealed class Bread implements Product permits Half_Loaf, Whole_L
     private double price;
     private int quantity;
 
-    public Bread(Shop shop, String name, double price, int quantity) {
-        this.id = shop.getProductCount() + 1;
+    public Bread(int count, String name, double price, int quantity) {
+        this.id = count + 1;
         this.name = name;
         this.price = price;
         this.quantity = quantity;

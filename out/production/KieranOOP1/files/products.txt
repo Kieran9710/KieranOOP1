@@ -1,0 +1,9 @@
+Pastry,Croissant,2.99,50
+Pastry,Pain Au Chocolat,3.99,30
+Pastry,Cinnamon Roll,3.99,15
+Cake,Chocolate Cake,15.50,3,Happy Birthday
+Cake,Sponge Cake,12.99,2,[sprinkles nuts]
+Half_Loaf,Sourdough,3.99,15
+Whole_Loaf,Sourdough,6.00,30
+Half_Loaf,Soda Bread,2.99,10
+Whole_Loaf,Soda Bread,5.00,20

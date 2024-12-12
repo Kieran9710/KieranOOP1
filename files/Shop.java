@@ -1,14 +1,20 @@
 package files;
 import java.util.*;
 
-import static java.lang.System.exit;
-
+//A class representing the shop side of the bakery that manages sales and transactions.
 public class Shop{
+
+    // Reference to the associated Bakery instance
     Bakery bakery;
+
+    //Constructor to initialize the Shop with a Bakery instance.
     Shop(Bakery bakery){this.bakery = bakery;}
+
+    // Lists of Sales and Transactions made in the shop
     private ArrayList<Sale> salesList = new ArrayList<>();
     private ArrayList<Transaction> transactionList = new ArrayList<>();
 
+    //Methods to get and add to the lists of sales and transactions
     public ArrayList<Sale>  getSalesList() {
         return new ArrayList<>(this.salesList);
     }
@@ -29,6 +35,7 @@ public class Shop{
         return this.salesList.size();
     }
 
+    //Method to create a Sale based on products requested by customer
     public String sellItems(HashMap<Integer,Integer> saleItems) {
         ArrayList<Integer> errorIds = new ArrayList<>();
         ArrayList<Integer> quantityErrorIds = new ArrayList<>();
@@ -76,6 +83,7 @@ public class Shop{
         return result;
     }
 
+    //Method to create the Transaction relating to a sale
     public Transaction makeTransaction(int saleid, double total, ArrayList<Double> amounts) {
         Random r = new Random();
         if( r.nextDouble() > 0.5){

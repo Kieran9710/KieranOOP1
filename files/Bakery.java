@@ -5,21 +5,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-import static java.lang.System.exit;
 
+//A class representing a Bakery, responsible for managing products.
 public final class Bakery {
-    
+
+    // List of all products in the bakery
     private ArrayList<Product> products = new ArrayList<>();
+
+    //Constructor that initializes the Bakery by loading products from a file.
     Bakery(){
         try{
-            loadProductsFromFile("producs.txt");
+            loadProductsFromFile("products.txt");
         }
         catch (IOException e) {
-            System.out.println("File products.txt could not be found" + e.getMessage());
+            System.out.println("File products.txt could not be found: " + e.getMessage());
         }
     }
 
-
+    //Methods for retrieving product data and details
     public ArrayList<Product>  getProducts() {
         return new ArrayList<>(this.products);
     }
@@ -40,6 +43,7 @@ public final class Bakery {
         return this.products.size();
     }
 
+    //Methods for creating new products
     public String addPastry(String name, double price, int quantity){
         if(this.getProducts().stream().filter(p -> p.getName() == name).toList().isEmpty()){
             this.setProducts(new Pastry(this.getProductCount(), name, price, quantity));
@@ -76,6 +80,7 @@ public final class Bakery {
         }
     }
 
+    //Method for retrieving default products from a file
     public void loadProductsFromFile(String fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String line;

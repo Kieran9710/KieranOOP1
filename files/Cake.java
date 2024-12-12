@@ -5,6 +5,7 @@ import java.util.List;
 
 
 public non-sealed class Cake implements Product  {
+    // Fields for storing Cake attributes
     private int id;
     private String name;
     private String message;
@@ -12,6 +13,7 @@ public non-sealed class Cake implements Product  {
     private double price;
     private int quantity;
 
+    // Constructors to initialize the Cake object using method overloading
     public Cake(int count,String name, double price, int quantity)
     {
         this(count, name, price,  quantity, "", new ArrayList<>());
@@ -37,6 +39,7 @@ public non-sealed class Cake implements Product  {
         this.toppings = toppings;
     }
 
+    //Getter and Setter methods for Cake attributes
     public int getId() {
         return id;
     }
@@ -65,6 +68,7 @@ public non-sealed class Cake implements Product  {
         return toppings;
     }
 
+    // Method to print the attributes of a Cake in a user-friendly format
     @Override
     public void typeToString(){
         System.out.println("Type: " + getClass().getName().replace("files.", ""));

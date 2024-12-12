@@ -4,41 +4,52 @@ import java.util.*;
 
 import static java.lang.System.exit;
 
-
+//This class provides a User Interface (UI) for interacting with the Bakery Management System.
 public class UI {
     public static void main(String[] args) {
+
+        // Initialize a Bakery instance
         Bakery bakery = new Bakery();
+
+        //Initialize a Shop instance and pass it the Bakery
         Shop shop = new Shop(bakery);
+
+        // Scanner for user input
         Scanner myObj = new Scanner(System.in);
         System.out.println("Welcome to my Bakery management system");
 
         while(true) {
 
+            // Display the menu
             handleMenu();
             var response = myObj.nextLine().toLowerCase();
 
+            // Handle user input
             switch (response) {
                 case "1": handleAddProduct(myObj, bakery); continue;
                 case "2": handleViewProducts(bakery); continue;
-                case "3": handleSale(myObj, shop); continue;
-                case "4": handleAddQuantity(myObj, bakery); continue;
+                case "3": handleAddQuantity(myObj, bakery); continue;
+                case "4": handleSale(myObj, shop); continue;
                 case "5": handleViewSales(bakery, shop); continue;
-                case "quit": exit(0);
+                case "quit": exit(0); // Exit the program
             }
         }
     }
 
+    //Displays the main menu options to the user.
     public static void handleMenu(){
         System.out.println();
         System.out.println("What would you like to do?");
         System.out.println("Create and add a product: Enter ''1'");
         System.out.println("View products: Enter '2'");
-        System.out.println("Enter a Sale: Enter '3'");
-        System.out.println("Add quantity: Enter '4'");
+        System.out.println("Add quantity: Enter '3'");
+        System.out.println("Enter a Sale: Enter '4'");
         System.out.println("View sales: Enter '5'");
         System.out.println("Quit: Enter 'quit'");
+        System.out.println();
     }
 
+    //Handles the creation of a Product to the bakery.
     public static void handleAddProduct(Scanner myObj, Bakery bakery) {
         var validList = new ArrayList<>(List.of("bread", "pastry", "cake"));
         var type = "";
@@ -46,6 +57,7 @@ public class UI {
         var price = 0.0;
         var quantity = 0;
         String result ="";
+        //Validate product type
         while(true) {
             System.out.println("Enter type of product? Bread/Pastry/Cake");
             type = myObj.nextLine().replace(" ", "").toLowerCase();
@@ -53,8 +65,9 @@ public class UI {
                 break;
             }
             System.out.println("Sorry, we do not have products of type:" + type);
-            System.out.println("");
+            System.out.println();
         }
+        //Validate product name
         while(true) {
             System.out.println("Enter the product name");
             name = myObj.nextLine();
@@ -62,9 +75,10 @@ public class UI {
                 break;
             }
             System.out.println("Sorry, we already have a product named " + name);
-            System.out.println("");
+            System.out.println();
             break;
         }
+        //Validate product price
         while(true) {
             try {
                 System.out.println("Enter the product price");
@@ -75,6 +89,7 @@ public class UI {
             }
             break;
         }
+        //Validate product quantity
         while(true) {
             try {
                 System.out.println("Enter the product quantity");
@@ -85,6 +100,7 @@ public class UI {
             }
             break;
         }
+        //Add the product based on its type
         switch (Product.ProductType.valueOf(type.toUpperCase())) {
             case BREAD-> result = bakery.addBread(name, price, quantity);
             case PASTRY-> result = bakery.addPastry(name, price, quantity);
@@ -99,13 +115,14 @@ public class UI {
         System.out.println(result);
     }
 
+    //Displays all products available in the bakery.
     public static void handleViewProducts(Bakery bakery) {
         ArrayList<Product> products = bakery.getProducts();
-        System.out.println("");
+        System.out.println();
         System.out.println("Product List");
         for (Product product : products) {
 
-            System.out.println("");
+            System.out.println();
             System.out.println("Id: " + product.getId());
             System.out.println("Name: " + product.getName());
             System.out.println("Price: " + product.getPrice());
@@ -120,6 +137,7 @@ public class UI {
         }
     }
 
+    //Handles the sale of products by collecting sale details from the user.
     public static void handleSale(Scanner myObj, Shop shop) {
         HashMap<Integer, Integer> sales = new HashMap <>();
         while (true) {
@@ -137,6 +155,7 @@ public class UI {
         System.out.println(result);
     }
 
+    //Adds more quantity to an existing product in the bakery.
     public static void handleAddQuantity(Scanner myObj, Bakery bakery) {
         System.out.println("Enter the product id");
         var id = Integer.parseInt(myObj.nextLine());
@@ -146,15 +165,16 @@ public class UI {
         System.out.println(result);
     }
 
+    //Displays the sales records and transactions for the shop.
     public static void handleViewSales(Bakery bakery, Shop shop) {
         ArrayList<Product> products = bakery.getProducts();
         ArrayList<Sale> sales = shop.getSalesList();
         ArrayList<Transaction> transactions = shop.getTransactionList();
-        System.out.println("");
+        System.out.println();
         System.out.println("Sales List");
         for (Sale sale : sales) {
 
-            System.out.println("");
+            System.out.println();
             System.out.println("ID: " + sale.saleid());
             System.out.println("Date: " + sale.saleDate());
             HashMap<String, Integer> items = sale.items();

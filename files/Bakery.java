@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import static java.lang.System.exit;
+
 
 //A class representing a Bakery, responsible for managing products.
 public final class Bakery {
@@ -19,6 +21,7 @@ public final class Bakery {
         }
         catch (IOException e) {
             System.out.println("File products.txt could not be found: " + e.getMessage());
+            exit(0);
         }
     }
 

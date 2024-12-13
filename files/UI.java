@@ -167,9 +167,9 @@ public class UI {
 
     //Displays the sales records and transactions for the shop.
     public static void handleViewSales(Bakery bakery, Shop shop) {
-        ArrayList<Product> products = bakery.getProducts();
-        ArrayList<Sale> sales = shop.getSalesList();
-        ArrayList<Transaction> transactions = shop.getTransactionList();
+        final Product[] products = new Product[bakery.getProductCount()];{bakery.getProducts().toArray(products);}
+        final Sale[] sales = new Sale[shop.getSaleCount()];{shop.getSalesList().toArray(sales);}
+        final Transaction[] transactions = new Transaction[shop.getSaleCount()];{shop.getTransactionList().toArray(transactions);}
         System.out.println();
         System.out.println("Sales List");
         for (Sale sale : sales) {
@@ -178,15 +178,17 @@ public class UI {
             System.out.println("ID: " + sale.saleid());
             System.out.println("Date: " + sale.saleDate());
             HashMap<String, Integer> items = sale.items();
-            items.forEach((key, value) -> {
+            for (Map.Entry<String, Integer> entry : items.entrySet()) {
+                String key = entry.getKey();
+                Integer value = entry.getValue();
                 System.out.println("Product  Quantity  Price");
-                Product product = products.stream()
+                Product product = Arrays.stream(products)
                         .filter(x -> x.getName().equals(key))
                         .findFirst()
                         .orElseThrow(() -> new RuntimeException("Product not found: " + key));
                 System.out.println("   " + product.getId() + "        " + value + "      " + String.format("%.2f", product.getPrice() * value));
-            });
-            Transaction transaction = transactions.stream().filter(sale::isSaleIdMatching).findFirst().get();
+            }
+            Transaction transaction = Arrays.stream(transactions).filter(sale::isSaleIdMatching).findFirst().get();
             System.out.println("Method: "+ transaction.getPaymentMethod());
             System.out.println("Paid: "+ String.format("%.2f", transaction.getAmountPaid()));
             System.out.println("Change: "+ String.format("%.2f", transaction.getChange()));
